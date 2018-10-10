@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<script src="js/jquery-1.11.3.js"></script>
+		<script>
+			$(function(){
+				//获取元素
+				//大盒子
+				var $bigBox = $('#box');
+				//小图所在水在的盒子				
+				var $smallBox = $('.small_pic');
+				//获取小图
+				var $smallPic = $('.small_pic img');
+				//获取遮罩
+				var $mark = $('.mark');
+				//获取滑块
+				var $float = $('.float');
+				//大图所在的盒子
+				var $big_pic = $('.big_pic');
+				//获取大图
+				var $bigPic = $('.big_pic img');
+				//console.log($bigPic);
+				//添加事件
+				//鼠标移入移出事件
+				$mark.hover(function(){
+					$float.show();
+					$big_pic.show();
+				},function(){
+					$float.hide();
+					$big_pic.hide();
+				})
+				$mark.mousemove(function(evt){
+					var e = evt || window.event;
+					var left = e.pageX - $mark.offset().left - $float.outerWidth() / 2;
+					var top = e.pageY - $mark.offset().top- $float.outerHeight() / 2;
+					if( left <= 0){
+						left = 0;
+					}else if( left >= $mark.width() - $float.width()){
+						left = $mark.width() - $float.width();
+					}
+					if(top <= 0){
+						top = 0;
+					}else if(top >= $mark.height() - $float.height()){
+						top = $mark.height() - $float.height();
+					}
+					$float.css({
+						left : left,
+						top : top
+					})
+					//比例
+					var pX = left / ($mark.outerWidth() - $float.outerWidth());
+					var pY = top / ($mark.outerHeight() - $float.outerHeight());
+					$bigPic.css({
+						left : -($bigPic.width() - $big_pic.width()) * pX,
+						top : -($bigPic.height() - $big_pic.height()) * pY
+					})
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<div id="box">
+			<div class="small_pic">
+				<div class="mark"></div>
+				<div class="float"></div>
+				<img src="img/small.jpg"/>
+			</div>
+			<div class="big_pic">
+				<img src="img/big.jpg"/>
+		</div>
+	</body>
+	
+</html>
